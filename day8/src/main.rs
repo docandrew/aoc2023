@@ -60,13 +60,6 @@ fn steps_to_zzz (starting_node : String, s : String) -> usize {
     return steps;
 }
 
-#[derive(PartialEq, Eq, Debug)]
-struct SeenNode {
-    label : String,
-    path_idx : usize,
-    steps : usize,
-}
-
 // Part 2. Find paths to xxZ nodes. We'll keep going until we hit the same
 // node at the same place in the path, then we'll know we've found a cycle of Z
 // nodes. We'll return a vector of the visited Z nodes with their respective
