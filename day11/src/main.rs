@@ -93,28 +93,25 @@ fn main() {
             let star_i = stars[i];
             let star_j = stars[j];
 
-            if star_i != star_j {
+            // determine number of empty rows and cols between these stars
+            //
+            // N.B. I'm glad I did it this way and not actually expanding the matrix
+            // (my original plan but this seemed easier for part 1 - it paid off for part 2!)
+            let (sr, er) = if star_i.0 < star_j.0 { (star_i.0, star_j.0) } else { (star_j.0, star_i.0) };
+            let (sc, ec) = if star_i.1 < star_j.1 { (star_i.1, star_j.1) } else { (star_j.1, star_i.1) };
+            let empty_rows_between : i32 = empty_rows[sr..er].iter().map(|x| if *x { 1 } else { 0 }).sum();
+            let empty_cols_between : i32 = empty_cols[sc..ec].iter().map(|x| if *x { 1 } else { 0 }).sum();
 
-                // determine number of empty rows and cols between these stars
-                //
-                // N.B. I'm glad I did it this way and not actually expanding the matrix
-                // (my original plan but this seemed easier for part 1 - it paid off for part 2!)
-                let (sr, er) = if star_i.0 < star_j.0 { (star_i.0, star_j.0) } else { (star_j.0, star_i.0) };
-                let (sc, ec) = if star_i.1 < star_j.1 { (star_i.1, star_j.1) } else { (star_j.1, star_i.1) };
-                let empty_rows_between : i32 = empty_rows[sr..er].iter().map(|x| if *x { 1 } else { 0 }).sum();
-                let empty_cols_between : i32 = empty_cols[sc..ec].iter().map(|x| if *x { 1 } else { 0 }).sum();
-
-                let dist = manhattan_dist(star_i, star_j) +
-                                    empty_rows_between as usize + 
-                                    empty_cols_between as usize;
-                
-                let big_dist = manhattan_dist(star_i, star_j) +
-                                    empty_rows_between as usize * 999_999 + 
-                                    empty_cols_between as usize * 999_999;
-                
-                sum += dist;
-                sum_2 += big_dist;
-            }
+            let dist = manhattan_dist(star_i, star_j) +
+                                empty_rows_between as usize + 
+                                empty_cols_between as usize;
+            
+            let big_dist = manhattan_dist(star_i, star_j) +
+                                empty_rows_between as usize * 999_999 + 
+                                empty_cols_between as usize * 999_999;
+            
+            sum += dist;
+            sum_2 += big_dist;
         }
     }
 
